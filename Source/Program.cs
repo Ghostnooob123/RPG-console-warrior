@@ -1,11 +1,10 @@
-﻿using App1;
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using System.Threading;
 using System.Collections;
 
-namespace MyApp
+namespace App1.Source
 {
     internal class Program
     {
@@ -26,7 +25,7 @@ namespace MyApp
                         int randomBuff = random.Next(1, 6);
                         Goblin goblin = new Goblin();
 
-                        goblin.Attack += (sbyte) randomBuff;
+                        goblin.Attack += (sbyte)randomBuff;
                         goblin.Health += (sbyte)randomBuff;
                         goblin.Defense += (sbyte)randomBuff;
 
@@ -72,7 +71,7 @@ namespace MyApp
 
         static void Main(string[] args)
         {
-            
+
 
             switch (MenuInput())
             {
@@ -144,7 +143,7 @@ namespace MyApp
                         }
                     }
 
-                        Console.WriteLine("Game ended!\n");
+                    Console.WriteLine("Game ended!\n");
                     break;
 
                 case 2:

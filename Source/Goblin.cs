@@ -1,44 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App1
+namespace App1.Source
 {
-    internal class Spider : IEnemy
+    internal class Goblin : IEnemy
     {
         // Constructor
-        public Spider() {
-            if (this._spawn == false)
+        public Goblin()
+        {
+            if (_spawn == false)
             {
                 Random random = new Random();
 
-                this._defaultAttack = (sbyte)random.Next(11, 15);
-                this._defaultHealth = (sbyte)random.Next(13, 16);
-                this._defaultDefense = (sbyte)random.Next(1, 4);
+                _defaultAttack = (sbyte)random.Next(10, 16);
+                _defaultHealth = (sbyte)random.Next(13, 17);
+                _defaultDefense = (sbyte)random.Next(2, 6);
 
-                this._spawn = true;
+                _spawn = true;
             }
 
-            this.Attack = _defaultAttack;
-            this.Health = _defaultHealth;
-            this.Defense = _defaultDefense;
-            this.Type = "Spider";
+            Attack = _defaultAttack;
+            Health = _defaultHealth;
+            Defense = _defaultDefense;
+            Type = "Goblin";
         }
 
         public void DealDamage(Player player, float damageAmount)
         {
-            Console.WriteLine($"Spider turn!");
+            Console.WriteLine($"Goblin turn!");
 
             player.TakeDamage(this, damageAmount);
         }
 
         public void TakeDamage(float damageAmount)
         {
-            this.Health -= (sbyte) Math.Max(damageAmount - this.Defense, 0); ;
+            Health -= (sbyte)Math.Max(damageAmount - Defense, 0);
 
-            Console.WriteLine($"Spider took: {{{damageAmount}}} damage from player. Current health: {{{this.Health}}}. Current Defense: {{{this.Defense}}}");
+            Console.WriteLine($"Goblin took: {{{damageAmount}}} damage from player. Current health: {{{Health}}}. Current Defense: {{{Defense}}}");
         }
 
         private sbyte _health = 0;
@@ -54,19 +56,16 @@ namespace App1
         {
             get
             {
-                if (this._health <= 0)
+                if (_health <= 0)
                 {
                     return 0;
                 }
 
-                return this._health;
+                return _health;
             }
-            set { this._health = value; }
+            set { _health = value; }
         }
-
         public sbyte Defense { get; set; }
         public string Type { get; set; }
-
-
     }
 }

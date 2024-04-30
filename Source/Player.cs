@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace App1
+namespace App1.Source
 {
 
     internal class Player
@@ -14,20 +14,20 @@ namespace App1
         // Constructor
         public Player()
         {
-            if (this._spawn == false)
+            if (_spawn == false)
             {
                 Random random = new Random();
 
-                this._defaultAttack = (sbyte)random.Next(10, 16);
-                this._defaultHealth = (sbyte)random.Next(15, 20);
-                this._defaultDefense = (sbyte)random.Next(2, 6);
+                _defaultAttack = (sbyte)random.Next(10, 16);
+                _defaultHealth = (sbyte)random.Next(15, 20);
+                _defaultDefense = (sbyte)random.Next(2, 6);
 
-                this._spawn = true;
+                _spawn = true;
             }
 
-            this.Attack = this._defaultAttack;
-            this.Health = this._defaultHealth;
-            this.Defense = this._defaultDefense;
+            Attack = _defaultAttack;
+            Health = _defaultHealth;
+            Defense = _defaultDefense;
         }
 
         public static void DealDamage(IEnemy enemy, float damageAmount)
@@ -39,9 +39,9 @@ namespace App1
 
         public void TakeDamage(IEnemy enemy, float damageAmount)
         {
-            this.Health -= (sbyte)Math.Max(damageAmount - this.Defense, 0);
+            Health -= (sbyte)Math.Max(damageAmount - Defense, 0);
 
-            Console.WriteLine($"Player took: {{{damageAmount}}} damage from {{{enemy.Type}}}. Current health: {{{this.Health}}}. Current Defense: {{{this.Defense}}}");
+            Console.WriteLine($"Player took: {{{damageAmount}}} damage from {{{enemy.Type}}}. Current health: {{{Health}}}. Current Defense: {{{Defense}}}");
         }
 
         public void PlayerUpgrade(Random random)
@@ -57,18 +57,18 @@ namespace App1
 
             Console.Clear();
 
-            this.Health = _defaultHealth;
+            Health = _defaultHealth;
 
             switch (input)
             {
                 case 1:
-                    this.Attack += (sbyte)upgradeAttack;
+                    Attack += (sbyte)upgradeAttack;
                     break;
                 case 2:
-                    this.Health += (sbyte)upgradeHealth;
+                    Health += (sbyte)upgradeHealth;
                     break;
                 case 3:
-                    this.Defense += (sbyte)upgradeDefense;
+                    Defense += (sbyte)upgradeDefense;
                     break;
             }
         }
@@ -82,18 +82,18 @@ namespace App1
         private bool _spawn = false;
 
         public sbyte Attack { get; set; }
-        public sbyte Health 
-        { 
-            get 
+        public sbyte Health
+        {
+            get
             {
-            if (this._health <= 0)
+                if (_health <= 0)
                 {
                     return 0;
                 }
 
-                return this._health;
+                return _health;
             }
-            set { this._health = value; }
+            set { _health = value; }
         }
         public sbyte Defense { get; set; }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App1
+namespace App1.Source
 {
     internal interface IEnemy
     {
