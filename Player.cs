@@ -62,13 +62,13 @@ namespace App1
             switch (input)
             {
                 case 1:
-                    this.Attack += (sbyte) upgradeAttack;
+                    this.Attack += (sbyte)upgradeAttack;
                     break;
                 case 2:
-                    this.Health += (sbyte) upgradeHealth;
+                    this.Health += (sbyte)upgradeHealth;
                     break;
                 case 3:
-                    this.Defense += (sbyte) upgradeDefense;
+                    this.Defense += (sbyte)upgradeDefense;
                     break;
             }
         }
@@ -86,11 +86,12 @@ namespace App1
         public sbyte Attack
         {
             get { return attack; }
-            set { attack = value; }
+            private set { attack = value; }
         }
         public sbyte Health
         {
-            get {
+            get
+            {
                 if (this.health <= 0)
                 {
                     return 0;
@@ -103,7 +104,7 @@ namespace App1
         public sbyte Defense
         {
             get { return defense; }
-            set { defense = value; }
+            private set { defense = value; }
         }
     }
 }
