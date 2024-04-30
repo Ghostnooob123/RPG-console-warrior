@@ -18,8 +18,8 @@ namespace App1
             {
                 Random random = new Random();
 
-                this.defaultAttack = (sbyte)random.Next(11, 20);
-                this.defaultHealth = (sbyte)random.Next(15, 26);
+                this.defaultAttack = (sbyte)random.Next(10, 16);
+                this.defaultHealth = (sbyte)random.Next(15, 20);
                 this.defaultDefense = (sbyte)random.Next(2, 6);
 
                 this.spawn = true;
@@ -46,7 +46,7 @@ namespace App1
 
         public void PlayerUpgrade(Random random)
         {
-            int upgradeAttack = random.Next(1, 6);
+            int upgradeAttack = random.Next(1, 5);
             int upgradeHealth = random.Next(1, 5);
             int upgradeDefense = random.Next(1, 5);
 

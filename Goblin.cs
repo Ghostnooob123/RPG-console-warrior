@@ -15,8 +15,8 @@ namespace App1
             {
                 Random random = new Random();
 
-                this.defaultAttack = (sbyte)random.Next(11, 20);
-                this.defaultHealth = (sbyte)random.Next(15, 25);
+                this.defaultAttack = (sbyte)random.Next(10, 16);
+                this.defaultHealth = (sbyte)random.Next(13, 17);
                 this.defaultDefense = (sbyte)random.Next(2, 6);
 
                 this.spawn = true;
