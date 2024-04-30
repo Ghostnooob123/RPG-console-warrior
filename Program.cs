@@ -3,25 +3,63 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using System.Threading;
+using System.Collections;
 
 namespace MyApp
 {
-
     internal class Program
     {
-        static void Main(string[] args)
+        const sbyte enemiesBuffer = 50;
+
+        public static void GetEnemies(List<IEnemy> enemies)
         {
-
-            Player player = new Player();
-
-            Enemy goblin = new Goblin();
-            Enemy spider = new Spider();
-
-            int wins = 0;
-
             Random random = new Random();
 
+            for (int i = 0; i < enemiesBuffer; i++)
+            {
+                int randomMonster = random.Next(0, 101);
 
+                if (randomMonster <= 50)
+                {
+                    if (i > 1)
+                    {
+                        int randomBuff = random.Next(1, 6);
+                        Goblin goblin = new Goblin();
+
+                        goblin.Attack += (sbyte) randomBuff;
+                        goblin.Health += (sbyte)randomBuff;
+                        goblin.Defense += (sbyte)randomBuff;
+
+                        enemies.Add(goblin);
+                    }
+                    else
+                    {
+                        enemies.Add(new Goblin());
+                    }
+                }
+                else
+                {
+                    if (i > 1)
+                    {
+                        int randomBuff = random.Next(1, 6);
+                        Spider spider = new Spider();
+
+                        spider.Attack += (sbyte)randomBuff;
+                        spider.Health += (sbyte)randomBuff;
+                        spider.Defense += (sbyte)randomBuff;
+
+                        enemies.Add(spider);
+                    }
+                    else
+                    {
+                        enemies.Add(new Spider());
+                    }
+                }
+
+            }
+        }
+        public static int MenuInput()
+        {
             Console.WriteLine("Welcome to RPG Console Warrior\n\n");
             Console.WriteLine("1.Start Game\n");
             Console.WriteLine("2.Quit\n");
@@ -29,113 +67,84 @@ namespace MyApp
 
             int option = int.Parse(Console.ReadLine());
 
-            switch (option)
+            return option;
+        }
+
+        static void Main(string[] args)
+        {
+            
+
+            switch (MenuInput())
             {
                 case 1:
-                    while (player.Health > 0)
-                    {
+                    Player player = new Player();
 
+                    List<IEnemy> enemies = new List<IEnemy>();
+                    GetEnemies(enemies);
+
+                    int wins = 0;
+                    Random random = new Random();
+
+                    for (int i = 0; i < enemiesBuffer; i++)
+                    {
                         Console.Clear();
 
                         if (wins > 0)
                         {
-                            Console.WriteLine("\nPlayer won! \n");
+                            Console.WriteLine("Player won! \n");
                             player.PlayerUpgrade(random);
                         }
-                        Console.WriteLine("Fight begin!\n");
+                        Console.WriteLine($"Level: {wins}\n");
                         Thread.Sleep(1500);
 
                         int randomNumber = random.Next(0, 101);
 
-                        int phase = 0;
+                        int phase = 1;
 
-                        while (goblin.Health >= 0 || spider.Health >= 0)
+                        while (enemies[i].Health >= 0)
                         {
-                            int turn = random.Next(1, 3);
+                            Console.WriteLine($"\nPhase: {phase++}");
+                            Thread.Sleep(1500);
 
-                            Console.WriteLine($"Phase: {phase++}");
+                            Console.WriteLine($"Player vs {enemies[i].Type} \n");
+                            Thread.Sleep(1500);
+                            Console.WriteLine($"Player health: {{{player.Health}}} attack: {{{player.Attack}}} defense: {{{player.Defense}}}");
+                            Console.WriteLine($"{enemies[i].Type} health: {{{enemies[i].Health}}} attack: {{{enemies[i].Attack}}} defense: {{{enemies[i].Defense}}}\n");
 
-                            if (randomNumber <= 50)
+                            Thread.Sleep(2000);
+
+                            Player.DealDamage(enemies[i], player.Attack);
+                            if (enemies[i].Health <= 0)
                             {
-                                Console.WriteLine($"Player vs Goblin \n");
-                                Console.WriteLine($"Player health: {{{player.Health}}} attack: {{{player.Attack}}} defense: {{{player.Defense}}}");
-                                Console.WriteLine($"Goblin health: {{{goblin.Health}}} attack: {{{goblin.Attack}}} defense: {{{goblin.Defense}}}\n");
-
+                                Console.WriteLine($"\n{enemies[i].Type} Died!");
                                 Thread.Sleep(1500);
-
-                                player.DealDamage(goblin, player.Attack);
-                                if (goblin.Health <= 0)
-                                {
-                                    Console.WriteLine($"\nGoblin Died!");
-                                    break;
-                                }
-
-                                Console.WriteLine('\n');
-                                Thread.Sleep(1500);
-
-                                goblin.DealDamage(player, goblin.Attack);
-                                if (player.Health <= 0)
-                                {
-                                    Console.WriteLine($"\nPlayer Died!");
-                                    break;
-                                }
-
-                                Thread.Sleep(1500); 
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Player vs Spider \n");
-                                Console.WriteLine($"Player health: {{{player.Health}}} attack: {{{player.Attack}}} defense: {{{player.Defense}}}");
-                                Console.WriteLine($"Spider health: {{{spider.Health}}} attack: {{{spider.Attack}}} defense: {{{spider.Defense}}}\n");
-
-                                Thread.Sleep(1500);
-
-                                player.DealDamage(spider, player.Attack);
-                                if (spider.Health <= 0)
-                                {
-                                    Console.WriteLine($"\nSpider Died!");
-                                    break;
-                                }
-
-                                Console.WriteLine('\n');
-                                Thread.Sleep(1500);
-
-                                spider.DealDamage(player, spider.Attack);
-                                if (player.Health <= 0)
-                                {
-                                    Console.WriteLine($"\nPlayer Died!");
-                                    break;
-                                }
-
-                                Thread.Sleep(1500);
+                                break;
                             }
 
                             Console.WriteLine('\n');
+                            Thread.Sleep(2000);
+
+                            enemies[i].DealDamage(player, enemies[i].Attack);
+                            if (player.Health <= 0)
+                            {
+                                Console.WriteLine($"\nPlayer Died!");
+                                Thread.Sleep(1500);
+                                break;
+                            }
                         }
 
-                        Thread.Sleep(1500);
+                        wins++;
 
-                        if (player.Health > 0)
+                        Console.WriteLine("Press Enter to continue....");
+
+                        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                        while (keyInfo.Key != ConsoleKey.Enter)
                         {
-                            wins++;
 
-                            int randomBuff = random.Next(1, 4);
-
-                            goblin = new Goblin();
-
-                            goblin.Attack += (sbyte)(randomBuff);
-                            goblin.Health += (sbyte)(randomBuff);
-                            goblin.Defense += (sbyte)(randomBuff);
-
-                            spider = new Spider();
-
-                            spider.Attack += (sbyte)(randomBuff);
-                            spider.Health += (sbyte)(randomBuff);
-                            spider.Defense += (sbyte)(randomBuff);
                         }
                     }
 
-                    Console.WriteLine("Game ended!\n");
+                        Console.WriteLine("Game ended!\n");
                     break;
 
                 case 2:
@@ -143,5 +152,5 @@ namespace MyApp
                     break;
             }
         }
-        }
     }
+}

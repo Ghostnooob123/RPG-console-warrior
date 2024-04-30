@@ -14,30 +14,30 @@ namespace App1
         // Constructor
         public Player()
         {
-            if (this.spawn == false)
+            if (this._spawn == false)
             {
                 Random random = new Random();
 
-                this.defaultAttack = (sbyte)random.Next(10, 16);
-                this.defaultHealth = (sbyte)random.Next(15, 20);
-                this.defaultDefense = (sbyte)random.Next(2, 6);
+                this._defaultAttack = (sbyte)random.Next(10, 16);
+                this._defaultHealth = (sbyte)random.Next(15, 20);
+                this._defaultDefense = (sbyte)random.Next(2, 6);
 
-                this.spawn = true;
+                this._spawn = true;
             }
 
-            this.Attack = this.defaultAttack;
-            this.Health = this.defaultHealth;
-            this.Defense = this.defaultDefense;
+            this.Attack = this._defaultAttack;
+            this.Health = this._defaultHealth;
+            this.Defense = this._defaultDefense;
         }
 
-        public void DealDamage(Enemy enemy, float damageAmount)
+        public static void DealDamage(IEnemy enemy, float damageAmount)
         {
             Console.WriteLine($"Player turn!");
 
             enemy.TakeDamage(damageAmount);
         }
 
-        public void TakeDamage(Enemy enemy, float damageAmount)
+        public void TakeDamage(IEnemy enemy, float damageAmount)
         {
             this.Health -= (sbyte)Math.Max(damageAmount - this.Defense, 0);
 
@@ -57,7 +57,7 @@ namespace App1
 
             Console.Clear();
 
-            this.Health = defaultHealth;
+            this.Health = _defaultHealth;
 
             switch (input)
             {
@@ -73,38 +73,28 @@ namespace App1
             }
         }
 
-        private sbyte attack = 0;
-        private sbyte health = 0;
-        private sbyte defense = 0;
+        private sbyte _health = 0;
 
-        private sbyte defaultAttack = 0;
-        private sbyte defaultHealth = 0;
-        private sbyte defaultDefense = 0;
+        private sbyte _defaultAttack = 0;
+        private sbyte _defaultHealth = 0;
+        private sbyte _defaultDefense = 0;
 
-        private bool spawn = false;
+        private bool _spawn = false;
 
-        public sbyte Attack
-        {
-            get { return attack; }
-            private set { attack = value; }
-        }
-        public sbyte Health
-        {
-            get
+        public sbyte Attack { get; set; }
+        public sbyte Health 
+        { 
+            get 
             {
-                if (this.health <= 0)
+            if (this._health <= 0)
                 {
                     return 0;
                 }
-                return health;
-            }
-            set { health = value; }
-        }
 
-        public sbyte Defense
-        {
-            get { return defense; }
-            private set { defense = value; }
+                return this._health;
+            }
+            set { this._health = value; }
         }
+        public sbyte Defense { get; set; }
     }
 }
